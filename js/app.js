@@ -1,6 +1,15 @@
 /*
  * Create a list that holds all of your cards
  */
+const cards = [ 'fa-diamond', 'fa-diamond', 
+				'fa-paper-plane-o','fa-paper-plane-o',
+				'fa-bolt', 'fa-bolt',
+				'fa-cube','fa-cube',
+				'fa-anchor','fa-anchor',
+				'fa-leaf','fa-leaf',
+				'fa-bicycle','fa-bicycle',
+				'fa-bomb','fa-bomb',
+				];
 
 
 /*
@@ -10,9 +19,24 @@
  *   - add each card's HTML to the page
  */
 
+
+// define move to be 0 when started
+const move = 0;
+
+function init(){
+	let newCards = shuffle(cards);
+	const deck = document.querySelector('.deck');
+	const cardHTML = newCards.map(function(card){
+		return `<li class="card"><i class="fa ${card}"></i></li>`;
+	});
+	deck.innerHTML = cardHTML.join('');
+}
+
+init();
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    const currentIndex = array.length, temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
@@ -36,3 +60,15 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+
+/*
+const allCards = document.querySelectorAll('.card');
+const openCards = [];
+allCards.forEach(function(card){
+	card.addEventListener('click', function(e){
+		card.classList.add('open','show');
+	});
+});
+
+*/
