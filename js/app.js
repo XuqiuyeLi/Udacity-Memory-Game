@@ -1,7 +1,9 @@
 /*
  * Create a list that holds all of your cards
  */
-const cards = [ 'fa-diamond', 'fa-diamond', 
+
+
+const allCards = ['fa-diamond','fa-diamond',
 				'fa-paper-plane-o','fa-paper-plane-o',
 				'fa-bolt', 'fa-bolt',
 				'fa-cube','fa-cube',
@@ -18,25 +20,31 @@ const cards = [ 'fa-diamond', 'fa-diamond',
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
+const moveCount = document.querySelector('.moves');
+const restart = document.querySelector('.restart');
+let move = 0;
 
 
-// define move to be 0 when started
-const move = 0;
-
+// initialize the game with cards randomly shuffled
 function init(){
-	let newCards = shuffle(cards);
+	let newCards = shuffle(allCards);
 	const deck = document.querySelector('.deck');
 	const cardHTML = newCards.map(function(card){
-		return `<li class="card"><i class="fa ${card}"></i></li>`;
+		return `<li class="card" data-icon="${card}"><i class="fa ${card}"></i></li>`;
 	});
+	moveCount.textContent = 0;
 	deck.innerHTML = cardHTML.join('');
 }
 
 init();
+/*
+restart.addEventListener('click', function(){
+		init();
+	}); */
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    const currentIndex = array.length, temporaryValue, randomIndex;
+    var currentIndex = array.length, temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
@@ -62,13 +70,91 @@ function shuffle(array) {
  */
 
 
-/*
-const allCards = document.querySelectorAll('.card');
-const openCards = [];
-allCards.forEach(function(card){
-	card.addEventListener('click', function(e){
-		card.classList.add('open','show');
+
+const cards = document.querySelectorAll('.card');
+let openCards = [];
+let matchedCards = [];
+let card;
+
+
+cards.forEach(function(card){
+		card.addEventListener('click', function(){	
+			// To prevent users click on same open card twice
+			if(!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match')){	
+				// if 0 or 1 card is open already, users can click	
+				openCards.push(card);
+				card.classList.add('open','show');
+				if(openCards.length === 2){
+					move++;
+					moveCount.textContent = move;
+					starUpdate(move);
+					// if two cards are matched
+					if (compare(openCards[0],openCards[1]) === true){
+						openCards.forEach(function(card){
+							matchedCards.push(card);
+							card.classList.remove('open','show');
+							card.classList.add('match');
+					});
+					openCards = [];
+				}
+				// if not matched
+				else{
+					setTimeout(function(){
+					openCards.forEach(function(card){
+						card.classList.remove('open','show');
+					});
+					openCards = [];
+				}, 600);
+				}			
+			}
+		}
 	});
 });
 
-*/
+
+
+// Compare the two cards to see if they match
+function compare(card_1, card_2){
+	if(card_1.dataset.icon === card_2.dataset.icon){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+let star = document.querySelector('.last');
+// Update star rating based on move counts
+function starUpdate(move){
+	if (move === 10){
+		//two stars
+		star.classList.replace('fa-star', 'fa-star-o');
+		star = document.querySelector('.middle'); 
+	}
+	if (move === 14){
+		//one star
+		star.classList.replace('fa-star', 'fa-star-o');
+		star = document.querySelector('.first'); 
+	}
+	if (move === 18){
+		//game over 
+		star.classList.replace('fa-star', 'fa-star-o');
+	}
+}
+
+let time = 0;
+// A timer when the game starts
+function setTimer(){
+	
+}
+
+// if the user wins the game
+function winning(){
+	if(matchedCards.length === 16){
+
+	}
+}
+
+// if the user wants to reset the game
+
+	
