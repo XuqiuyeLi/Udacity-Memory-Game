@@ -21,7 +21,7 @@ const allCards = ['fa-diamond','fa-diamond',
  *   - add each card's HTML to the page
  */
 const moveCount = document.querySelector('.moves');
-const restart = document.querySelector('.restart');
+const restart = document.querySelector('.fa-repeat');
 let move = 0;
 
 
@@ -29,14 +29,27 @@ let move = 0;
 function init(){
 	let newCards = shuffle(allCards);
 	const deck = document.querySelector('.deck');
+	const stars = document.querySelector('.stars');
 	const cardHTML = newCards.map(function(card){
 		return `<li class="card" data-icon="${card}"><i class="fa ${card}"></i></li>`;
 	});
 	moveCount.textContent = 0;
 	deck.innerHTML = cardHTML.join('');
+	stars.innerHTML = `	<li><i class="fa fa-star first"></i></li>
+						<li><i class="fa fa-star middle"></i></li>
+        				<li><i class="fa fa-star last"></i></li>`;
+
 }
 
 init();
+cardClick();
+
+restart.addEventListener('click', function(){
+	init();
+	move = 0;
+	cardClick();
+	});
+
 /*
 restart.addEventListener('click', function(){
 		init();
@@ -70,14 +83,13 @@ function shuffle(array) {
  */
 
 
+function cardClick(){
+	const cards = document.querySelectorAll('.card');
+	let openCards = [];
+	let matchedCards = [];
+	let card;
 
-const cards = document.querySelectorAll('.card');
-let openCards = [];
-let matchedCards = [];
-let card;
-
-
-cards.forEach(function(card){
+	cards.forEach(function(card){
 		card.addEventListener('click', function(){	
 			// To prevent users click on same open card twice
 			if(!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match')){	
@@ -95,6 +107,7 @@ cards.forEach(function(card){
 							card.classList.remove('open','show');
 							card.classList.add('match');
 					});
+					winning(matchedCards);
 					openCards = [];
 				}
 				// if not matched
@@ -110,7 +123,7 @@ cards.forEach(function(card){
 		}
 	});
 });
-
+}
 
 
 // Compare the two cards to see if they match
@@ -126,17 +139,17 @@ function compare(card_1, card_2){
 let star = document.querySelector('.last');
 // Update star rating based on move counts
 function starUpdate(move){
-	if (move === 10){
+	if (move === 12){
 		//two stars
 		star.classList.replace('fa-star', 'fa-star-o');
 		star = document.querySelector('.middle'); 
 	}
-	if (move === 14){
+	if (move === 16){
 		//one star
 		star.classList.replace('fa-star', 'fa-star-o');
 		star = document.querySelector('.first'); 
 	}
-	if (move === 18){
+	if (move === 22){
 		//game over 
 		star.classList.replace('fa-star', 'fa-star-o');
 	}
@@ -149,12 +162,17 @@ function setTimer(){
 }
 
 // if the user wins the game
-function winning(){
+function winning(matchedCards){
 	if(matchedCards.length === 16){
-
+		let winningPage = document.querySelector('.deck');
+		// modify here for winning page
+		winningPage.textContent = 'You just win this game!!'
 	}
+
 }
 
 // if the user wants to reset the game
+
+
 
 	
