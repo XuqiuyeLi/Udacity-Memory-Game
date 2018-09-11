@@ -52,9 +52,12 @@ h1 {
 }
 
 .deck .winning{
-    color: #E0FFFF;
-    text-align: center;
+    background-color: !important #E0FFFF;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     text-transform: uppercase;
+    display: block;
 }
 
 .deck .card {
@@ -131,4 +134,16 @@ h1 {
     display: inline-block;
     margin: auto;
     width: 50%;
+}
+
+.play-again {
+    background-color: white;
+    color: black;
+    border: 2px solid #4CAF50;
+}
+
+.play-again:hover{
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
 }
