@@ -51,6 +51,12 @@ h1 {
     margin: 0 0 3em;
 }
 
+.deck .winning{
+    color: #E0FFFF;
+    text-align: center;
+    text-transform: uppercase;
+}
+
 .deck .card {
     height: 125px;
     width: 125px;
@@ -81,6 +87,14 @@ h1 {
     font-size: 33px;
 }
 
+.deck .card.transform1{
+    transform: scaleX(1.2), rotateZ(15deg);
+
+}
+
+.deck .card.transform2{
+    transform: scaleY(1.2), rotateZ(-15deg);
+}
 /*
  * Styles for the Score Panel
  */
@@ -100,10 +114,21 @@ h1 {
 
 .score-panel .stars li {
     list-style: none;
+    color: #FFD700;
     display: inline-block;
 }
 
+
 .score-panel .restart {
     float: right;
+    color: #B22222;
     cursor: pointer;
+}
+
+.score-panel .timer{
+    text-align: center;
+    color: #2E8B57;
+    display: inline-block;
+    margin: auto;
+    width: 50%;
 }
