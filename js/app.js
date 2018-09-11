@@ -22,7 +22,43 @@ const allCards = ['fa-diamond','fa-diamond',
  */
 const moveCount = document.querySelector('.moves');
 const restart = document.querySelector('.fa-repeat');
-let move = 0;
+const t = document.querySelector('.timer');
+let move = 0, time = 0;
+let timer, minutes, seconds;
+
+
+// A timer when the game starts
+function setTimer(){
+	timer = setInterval(function(){
+		time++;
+		if(time < 60){
+			if(time < 10){
+				t.textContent = `00:0${time}`;	
+			}
+			else{
+				t.textContent = `00:${time}`;	
+			}
+		}
+		else {
+			// get the nearest minute value
+			minutes = Math.floor(time / 60); // Math.floor(round down to the nearst int)
+			seconds = time % 60;
+			if(minutes < 10 && seconds < 10){
+				t.textContent = `0${minutes}:0${seconds}`;
+			}
+			if(minutes < 10 && seconds > 10){
+				t.textContent = `0${minutes}:${seconds}`;
+			}
+			if(minutes > 10 && seconds < 10){
+				t.textContent = `${minutes}:0${seconds}`;
+			}
+			else{
+				t.textContent = `${minutes}:${seconds}`; 
+			}
+		}
+	},1000);
+	
+} 
 
 
 // initialize the game with cards randomly shuffled
@@ -34,6 +70,7 @@ function init(){
 		return `<li class="card" data-icon="${card}"><i class="fa ${card}"></i></li>`;
 	});
 	moveCount.textContent = 0;
+	setTimer();
 	deck.innerHTML = cardHTML.join('');
 	stars.innerHTML = `	<li><i class="fa fa-star first"></i></li>
 						<li><i class="fa fa-star middle"></i></li>
@@ -47,6 +84,9 @@ cardClick();
 restart.addEventListener('click', function(){
 	init();
 	move = 0;
+	time = 0;
+	clearInterval(timer);
+	setTimer();
 	cardClick();
 	});
 
@@ -106,7 +146,13 @@ function cardClick(){
 							matchedCards.push(card);
 							card.classList.remove('open','show');
 							card.classList.add('match');
-					});
+							openCards.forEach(function(card){
+								card.classList.add('transform1');
+								card.classList.remove('transform1');
+								card.classList.add('transform2');
+								card.classList.remove('transform2');
+							});
+						});
 					winning(matchedCards);
 					openCards = [];
 				}
@@ -137,36 +183,37 @@ function compare(card_1, card_2){
 }
 
 let star = document.querySelector('.last');
+let starRate = 3;
 // Update star rating based on move counts
 function starUpdate(move){
 	if (move === 12){
 		//two stars
 		star.classList.replace('fa-star', 'fa-star-o');
 		star = document.querySelector('.middle'); 
+		starRate --;
 	}
 	if (move === 16){
 		//one star
 		star.classList.replace('fa-star', 'fa-star-o');
 		star = document.querySelector('.first'); 
+		starRate --;
 	}
 	if (move === 22){
 		//game over 
 		star.classList.replace('fa-star', 'fa-star-o');
+		starRate --;
 	}
 }
 
-let time = 0;
-// A timer when the game starts
-function setTimer(){
-	
-}
 
 // if the user wins the game
 function winning(matchedCards){
 	if(matchedCards.length === 16){
 		let winningPage = document.querySelector('.deck');
+		winningPage.classList.add('.winning');
 		// modify here for winning page
-		winningPage.textContent = 'You just win this game!!'
+		let finishedTime = time;
+		winningPage.innerHTML = `<h2> Congratulations! </h2> <div> You Win with ${starRate} stars in ${timer}!!</div><button class ="play-again">Play Again</button> `;
 	}
 
 }
