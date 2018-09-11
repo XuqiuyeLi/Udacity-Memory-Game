@@ -70,7 +70,6 @@ function init(){
 		return `<li class="card" data-icon="${card}"><i class="fa ${card}"></i></li>`;
 	});
 	moveCount.textContent = 0;
-	setTimer();
 	deck.innerHTML = cardHTML.join('');
 	stars.innerHTML = `	<li><i class="fa fa-star first"></i></li>
 						<li><i class="fa fa-star middle"></i></li>
@@ -79,17 +78,22 @@ function init(){
 }
 
 init();
+setTimer();
 cardClick();
 
 restart.addEventListener('click', function(){
+	reset();
+	});
+
+function reset(){
 	init();
 	move = 0;
 	time = 0;
+	starRate = 3;
 	clearInterval(timer);
 	setTimer();
 	cardClick();
-	});
-
+}
 /*
 restart.addEventListener('click', function(){
 		init();
@@ -182,24 +186,26 @@ function compare(card_1, card_2){
 	}
 }
 
-let star = document.querySelector('.last');
+
+let star;
 let starRate = 3;
 // Update star rating based on move counts
 function starUpdate(move){
-	if (move === 12){
+	if (move === 15){
 		//two stars
+		star = document.querySelector('.last');
 		star.classList.replace('fa-star', 'fa-star-o');
-		star = document.querySelector('.middle'); 
 		starRate --;
 	}
-	if (move === 16){
+	if (move === 20){
 		//one star
+		star = document.querySelector('.middle'); 
 		star.classList.replace('fa-star', 'fa-star-o');
-		star = document.querySelector('.first'); 
 		starRate --;
 	}
-	if (move === 22){
+	if (move === 26){
 		//game over 
+		star = document.querySelector('.first'); 
 		star.classList.replace('fa-star', 'fa-star-o');
 		starRate --;
 	}
@@ -209,11 +215,17 @@ function starUpdate(move){
 // if the user wins the game
 function winning(matchedCards){
 	if(matchedCards.length === 16){
+		clearInterval(timer);
+
 		let winningPage = document.querySelector('.deck');
 		winningPage.classList.add('.winning');
 		// modify here for winning page
 		let finishedTime = time;
-		winningPage.innerHTML = `<h2> Congratulations! </h2> <div> You Win with ${starRate} stars in ${timer}!!</div><button class ="play-again">Play Again</button> `;
+		winningPage.innerHTML = `<h2> Congratulations! </h2><div> You win with ${starRate} stars in ${timer} minutes!!</div><button class ="play-again">Play Again</button> `;
+		let playAgain = document.querySelector('button');
+		playAgain.addEventListener('click',function(){
+			reset();
+		})
 	}
 
 }
