@@ -8,7 +8,7 @@
 ## Instructions
 
 The gameplay rules are very simple: flip over two hidden cards at a time to locate the ones that match!
-Have fun with the game!
+
 
 ## Install
 
